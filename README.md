@@ -13,9 +13,9 @@ Get access to this following information:
  - Filesize_kb
  - Requests
 
-## Modification
+## Configure
 
-To introduce some modification, go to config.js to change:
+To confiugure the project, copy config_dist.json on your config.json to add:
 - interval (Speedtime is check every second by default)
 - apikey (Imperative to get access to statuscake)
 - username (Imperative to get access to statuscake)
