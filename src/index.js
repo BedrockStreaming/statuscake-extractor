@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('config');
 const fetchStatuCakeData = require('./statuscake')
 const server = require('./server');
 

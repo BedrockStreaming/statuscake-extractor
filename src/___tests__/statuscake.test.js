@@ -1,11 +1,11 @@
 const fetchStatuCakeData = require('../statuscake');
 const StatutCakeData = require('../statuscakedata');
 const axios = require('axios');
-const config = require('../../config');
+const config = require('config');
 const Storage = require('../statuscakedata');
 
 jest.mock('axios');
-jest.mock('../../config', () => ({ statuscake: {
+jest.mock('config', () => ({ statuscake: {
   "apikey": "api-key",
   "username": "user",
   "baseUrl": "https://example.com/API/Pagespeed/",

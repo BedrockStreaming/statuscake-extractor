@@ -1,7 +1,7 @@
 const express = require('express');
 const Storage = require('./statuscakedata');
 const app = express();
-const config = require('../config');
+const config = require('config');
 
 const { route } = config.statuscake;
 

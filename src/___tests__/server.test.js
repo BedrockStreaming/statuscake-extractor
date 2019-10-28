@@ -2,7 +2,7 @@ const request =require("supertest");
 const Storage = require('../statuscakedata');
 const app = require('../server');
 
-jest.mock('../../config', () => ({ statuscake: {
+jest.mock('config', () => ({ statuscake: {
   "route": "/",
   "listener": 3000,
 }}))

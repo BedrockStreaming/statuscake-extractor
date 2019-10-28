@@ -1,7 +1,7 @@
 const axios = require('axios');
 const debug = require('debug')('statuscake');
 const logError = require('debug')('error');
-const config = require('../config');
+const config = require('config');
 const Storage = require('./statuscakedata');
 
 const { username, apikey, baseUrl } = config.statuscake;
