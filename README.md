@@ -15,7 +15,7 @@ Get access to this following information:
 
 ## Configure
 
-To confiugure the project, copy `config_example.json` on your `config.json` to add:
+To configure the project, copy `config_example.json` on your `config.json` to add:
 - interval (Speedtime is check every second by default)
 - apikey (Imperative to get access to statuscake)
 - username (Imperative to get access to statuscake)

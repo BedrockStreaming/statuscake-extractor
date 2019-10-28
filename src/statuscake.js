@@ -2,11 +2,13 @@ const axios = require('axios');
 const debug = require('debug')('statuscake');
 const logError = require('debug')('error');
 const config = require('../config');
+const Storage = require('./statuscakedata');
 
 const { username, apikey, baseUrl } = config.statuscake;
 const STATUS_CAKE_BASE_URL = `${baseUrl}?API=${apikey}&Username=${username}`;
 
 const fetchStatuCakeData = () => {
+  
   return axios.get(STATUS_CAKE_BASE_URL)
     .then(({ data: { data: urls } }) => {
       urls.forEach((item) => {
@@ -20,7 +22,8 @@ const fetchStatuCakeData = () => {
           },
         } = item;
 
-        debug(URL, Title, loadTimeMS, fileSizeKB, Requests);
+        debug(URL, Title, loadTimeMS, fileSizeKB, Requests); 
+        Storage.setData(urls)
       });
     }).catch((error) => {
       logError('axios can not access to the URL', error);
@@ -28,3 +31,4 @@ const fetchStatuCakeData = () => {
 };
 
 module.exports = fetchStatuCakeData;
+ 
