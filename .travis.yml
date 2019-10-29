@@ -6,4 +6,3 @@ cache:
   yarn: true
 script:
   - yarn test
-  

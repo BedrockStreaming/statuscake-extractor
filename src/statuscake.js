@@ -31,4 +31,3 @@ const fetchStatuCakeData = () => {
 };
 
 module.exports = fetchStatuCakeData;
- 

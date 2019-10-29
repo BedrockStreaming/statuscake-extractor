@@ -1,4 +1,4 @@
-const request =require("supertest");
+const request = require("supertest");
 const Storage = require('../statuscakedata');
 const app = require('../server');
 
