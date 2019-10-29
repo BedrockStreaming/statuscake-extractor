@@ -1,15 +1,15 @@
 class StatutCakeData {
-    constructor() {
-       this.data = {} 
-    }
+  constructor() {
+    this.data = {};
+  }
 
-    setData(data) {
-        this.data = data;
-    }
+  setData(data) {
+    this.data = data;
+  }
 
-    getData(data) {
-        return this.data;
-    }
+  getData() {
+    return this.data;
+  }
 }
 
 module.exports = new StatutCakeData();
