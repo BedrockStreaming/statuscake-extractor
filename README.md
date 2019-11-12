@@ -15,10 +15,13 @@ Get access to this following information:
 
 ## Configure
 
-To confiugure the project, copy `config_example.json` on your `config.json` to add:
+To configure the project, we use npm [`config`](https://www.npmjs.com/package/config) package, follow `config/default.json` example to define yours with:
 - interval (Speedtime is check every second by default)
 - apikey (Imperative to get access to statuscake)
 - username (Imperative to get access to statuscake)
+- baseUrl (Imperative to get access to statuscake)
+- route (Name your route)
+- listener (3000 by default)
 
 ## Debug
 
