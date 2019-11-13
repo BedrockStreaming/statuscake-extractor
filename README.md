@@ -15,7 +15,7 @@ Get access to this following information:
 
 ## Configure
 
-To configure the project, we use npm [`config`](https://www.npmjs.com/package/config) package, follow `config/default.json` example to define yours with:
+To configure the project, we use npm [`config`](https://www.npmjs.com/package/config) package, follow `config/default.json.dist` example to define yours with:
 - interval (Speedtime is check every second by default)
 - apikey (Imperative to get access to statuscake)
 - username (Imperative to get access to statuscake)
