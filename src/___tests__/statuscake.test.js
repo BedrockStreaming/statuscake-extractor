@@ -16,24 +16,24 @@ jest.mock('../statuscakedata', () => ({
 }))
 
 test('fetchStatuCakeData call axios', async () => {
-    axios.get.mockResolvedValue({ data: { data: [{
-      ID: 49216,
-      Title: '6play.fr - Programme NCIS - Mobile',
-      URL: 'http://www.6play.fr/n-c-i-s-p_843',
-      Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
-      Location_ISO: 'FR',
-      ContactGroups: [],
-      LatestStats: { Loadtime_ms: 5374, Filesize_kb: 4080.815, Requests: 47 }
-    },
-    {
-      ID: 49217,
-      Title: '6play.fr - Programme Z NCIS - Mobile',
-      URL: 'http://www.6play.fr/n-c-i-s-p_843',
-      Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
-      Location_ISO: 'FR',
-      ContactGroups: [],
-      LatestStats: { Loadtime_ms: 4394, Filesize_kb: 3514.8, Requests: 26 }
-    }] }});
+  axios.get.mockResolvedValue({ data: { data: [{
+    ID: 49216,
+    Title: '6play.fr - Programme NCIS - Mobile',
+    URL: 'http://www.6play.fr/n-c-i-s-p_843',
+    Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
+    Location_ISO: 'FR',
+    ContactGroups: [],
+    LatestStats: { Loadtime_ms: 5374, Filesize_kb: 4080.815, Requests: 47 }
+  },
+  {
+    ID: 49217,
+    Title: '6play.fr - Programme Z NCIS - Mobile',
+    URL: 'http://www.6play.fr/n-c-i-s-p_843',
+    Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
+    Location_ISO: 'FR',
+    ContactGroups: [],
+    LatestStats: { Loadtime_ms: 4394, Filesize_kb: 3514.8, Requests: 26 }
+  }] }})};
 
     await fetchStatuCakeData();
     expect(axios.get).toBeCalledWith("https://example.com/API/Pagespeed/?API=api-key&Username=user");
