@@ -9,18 +9,18 @@ const regex = /\s?([-])\s?/;
 const getTagsFromTitle = Title => Title.split(regex);
 
 const g = new client.Gauge({
-  name: 'metric_loadtime',
-  help: 'metric_help',
+  name: 'frontend_pagespeed_loadtime_seconds',
+  help: 'Loadtime of your page',
   labelNames: ['customer', 'service', 'device', 'version'],
 });
 const h = new client.Gauge({
-  name: 'metric_filesize',
-  help: 'metric_help',
+  name: 'frontend_pagespeed_filesize_bytes',
+  help: 'Filesize of your page',
   labelNames: ['customer', 'service', 'device', 'version'],
 });
 const i = new client.Gauge({
-  name: 'metric_request',
-  help: 'metric_help',
+  name: 'frontend_pagespeed_request_count',
+  help: 'Number of request',
   labelNames: ['customer', 'service', 'device', 'version'],
 });
 
@@ -30,15 +30,13 @@ setInterval(() => {
   if (data.length > 0) {
     data.forEach((myItem) => {
       const parsedTitle = getTagsFromTitle(myItem.Title);
-      g.set({
+      const labels = {
         customer: parsedTitle[0], service: parsedTitle[2], device: parsedTitle[4], version: parsedTitle[6],
-      }, myItem.LatestStats.loadTimeMS, date);
-      h.set({
-        customer: parsedTitle[0], service: parsedTitle[2], device: parsedTitle[4], version: parsedTitle[6],
-      }, myItem.LatestStats.fileSizeKB, date);
-      i.set({
-        customer: parsedTitle[0], service: parsedTitle[2], device: parsedTitle[4], version: parsedTitle[6],
-      }, myItem.LatestStats.Requests, date);
+      };
+      const setter = gauge => gauge.set(labels, myItem.LatestStats.loadTimeMS, date);
+      setter(g);
+      setter(h);
+      setter(i);
     });
   }
 }, 100);
