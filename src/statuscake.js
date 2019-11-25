@@ -31,8 +31,7 @@ const fetchStatuCakeData = Storage => axios.get(STATUS_CAKE_BASE_URL)
 
       return myNewItem;
     });
-   
-    console.log(urlsFormated);
+
     Storage.setData(urlsFormated);
   }).catch((error) => {
     logError('axios can not access to the URL', error);
