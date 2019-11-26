@@ -28,15 +28,18 @@ setInterval(() => {
   const date = (100, Date.now());
   const data = Storage.getData();
   if (data.length > 0) {
-    data.forEach((myItem) => {
+    const startsWithPrometheus = data.filter(d => String(d.Title).startsWith('[prometheus]'));
+    startsWithPrometheus.forEach((myItem) => {
       const parsedTitle = getTagsFromTitle(myItem.Title);
       const labels = {
         customer: parsedTitle[0], service: parsedTitle[2], device: parsedTitle[4], version: parsedTitle[6],
       };
-      const setter = gauge => gauge.set(labels, myItem.LatestStats.loadTimeMS, date);
-      setter(g);
-      setter(h);
-      setter(i);
+      const setterLoadTime = gauge => gauge.set(labels, myItem.LatestStats.loadTimeMS, date);
+      setterLoadTime(g);
+      const setterSize = gauge => gauge.set(labels, myItem.LatestStats.fileSizeKB, date);
+      setterSize(h);
+      const setterRequest = gauge => gauge.set(labels, myItem.LatestStats.Requests, date);
+      setterRequest(i);
     });
   }
 }, 100);
