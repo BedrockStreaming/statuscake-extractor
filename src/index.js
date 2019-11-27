@@ -34,12 +34,10 @@ setInterval(() => {
       const labels = {
         customer: parsedTitle[0], service: parsedTitle[2], device: parsedTitle[4], version: parsedTitle[6],
       };
-      const setterLoadTime = gauge => gauge.set(labels, myItem.LatestStats.loadTimeMS, date);
-      setterLoadTime(g);
-      const setterSize = gauge => gauge.set(labels, myItem.LatestStats.fileSizeKB, date);
-      setterSize(h);
-      const setterRequest = gauge => gauge.set(labels, myItem.LatestStats.Requests, date);
-      setterRequest(i);
+      const setter = (gauge, value) => gauge.set(labels, value, date);
+      setter(g, myItem.LatestStats.loadTimeMS);
+      setter(h, myItem.LatestStats.fileSizeKB);
+      setter(i, myItem.LatestStats.Requests);
     });
   }
 }, 100);
