@@ -1,6 +1,6 @@
 const axios = require('axios');
 const fetchStatuCakeData = require('../statuscake');
-const Storage = require('../statuscakedata');
+const storage = require('../statuscakedata');
 
 jest.mock('axios');
 jest.mock('config', () => ({
@@ -40,9 +40,9 @@ test('fetchStatuCakeData call axios', async () => {
     },
   });
 
-  await fetchStatuCakeData(Storage);
+  await fetchStatuCakeData(storage);
   expect(axios.get).toBeCalledWith('https://example.com/API/Pagespeed/?API=api-key&Username=user');
-  expect(Storage.setData).toBeCalledTimes(1);
+  expect(storage.setData).toBeCalledTimes(1);
 });
 
 

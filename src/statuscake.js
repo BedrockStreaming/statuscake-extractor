@@ -6,9 +6,9 @@ const config = require('config');
 const { username, apikey, baseUrl } = config.statuscake;
 const STATUS_CAKE_BASE_URL = `${baseUrl}?API=${apikey}&Username=${username}`;
 
-const fetchStatuCakeData = Storage => axios.get(STATUS_CAKE_BASE_URL)
+const fetchStatuCakeData = storage => axios.get(STATUS_CAKE_BASE_URL)
   .then(({ data: { data: urls } }) => {
-    const urlsFormated = urls.map((item) => {
+    const urlsFormated = urls.filter(item => String(item.Title).startsWith('[prometheus]')).map((item) => {
       const {
         URL,
         Title,
@@ -32,7 +32,7 @@ const fetchStatuCakeData = Storage => axios.get(STATUS_CAKE_BASE_URL)
       return myNewItem;
     });
 
-    Storage.setData(urlsFormated);
+    storage.setData(urlsFormated);
   }).catch((error) => {
     logError('axios can not access to the URL', error);
   });
