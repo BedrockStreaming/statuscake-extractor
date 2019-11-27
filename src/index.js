@@ -8,17 +8,17 @@ const regex = /\s?([-])\s?/;
 
 const getTagsFromTitle = Title => Title.split(regex);
 
-const g = new client.Gauge({
+const loadtimeGauge = new client.Gauge({
   name: 'frontend_pagespeed_loadtime_seconds',
   help: 'Loadtime of your page',
   labelNames: ['customer', 'service', 'device', 'version'],
 });
-const h = new client.Gauge({
+const filesizeGauge = new client.Gauge({
   name: 'frontend_pagespeed_filesize_bytes',
   help: 'Filesize of your page',
   labelNames: ['customer', 'service', 'device', 'version'],
 });
-const i = new client.Gauge({
+const requestGauge = new client.Gauge({
   name: 'frontend_pagespeed_request_count',
   help: 'Number of request',
   labelNames: ['customer', 'service', 'device', 'version'],
@@ -35,9 +35,9 @@ setInterval(() => {
         customer: parsedTitle[0], service: parsedTitle[2], device: parsedTitle[4], version: parsedTitle[6],
       };
       const setter = (gauge, value) => gauge.set(labels, value, date);
-      setter(g, myItem.LatestStats.loadTimeMS);
-      setter(h, myItem.LatestStats.fileSizeKB);
-      setter(i, myItem.LatestStats.Requests);
+      setter(loadtimeGauge, myItem.LatestStats.loadTimeMS);
+      setter(filesizeGauge, myItem.LatestStats.fileSizeKB);
+      setter(requestGauge, myItem.LatestStats.Requests);
     });
   }
 }, 100);
