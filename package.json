@@ -7,14 +7,15 @@
   "license": "MIT",
   "scripts": {
     "start": "node src/index.js",
-    "lint": "eslint src/*.js",
+    "lint": "eslint src/*",
     "test": "jest"
   },
   "dependencies": {
     "axios": "0.19.0",
     "config": "3.2.4",
     "debug": "4.1.1",
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "prom-client": "11.5.3"
   },
   "devDependencies": {
     "@m6web/eslint-config": "3.3.0",

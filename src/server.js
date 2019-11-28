@@ -1,13 +1,12 @@
+const client = require('prom-client');
 const express = require('express');
-const config = require('config');
-const Storage = require('./statuscakedata');
 
-const app = express();
+const server = express();
+const { register } = client;
 
-const { route } = config.statuscake;
-
-app.get(route, (request, response) => {
-  response.send(Storage.getData());
+server.get('/metrics', (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(register.metrics());
 });
 
-module.exports = app;
+module.exports = server;
