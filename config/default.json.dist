@@ -6,5 +6,10 @@
       "baseUrl": "your URL",
       "route": "'your route'",
       "listener": "your listener"
+      "filterby": "your filter",
+      "nameofloadtimegauge": "name of your loadtime gauge",
+      "nameoffilesizegauge": "name of your filesize gauge",
+      "nameofrequestgauge": "name of your request gauge",
+      "regex": "Your regex"
     }
 }
