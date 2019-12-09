@@ -7,7 +7,11 @@ const storage = require('./statuscakedata');
 const regexp = config.statuscake.regex;
 
 const getTagsFromTitle = title => title.match(new RegExp(regexp));
-const tags = [(config.statuscake.customer), (config.statuscake.service), (config.statuscake.device), (config.statuscake.version)];
+const tags = [
+  (config.statuscake.customer),
+  (config.statuscake.service),
+  (config.statuscake.device),
+  (config.statuscake.version)];
 
 const loadtimeGauge = new client.Gauge({
   name: (config.statuscake.nameofloadtimegauge),
