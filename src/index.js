@@ -4,29 +4,29 @@ const fetchStatuCakeData = require('./statuscake');
 const server = require('./server');
 const storage = require('./statuscakedata');
 
-const regexp = config.statuscake.regex;
+const { tagsFromTestTitleRegexp } = config.statuscake;
 
-const getTagsFromTitle = title => title.match(new RegExp(regexp));
+const matchTagsFromTitle = title => title.match(new RegExp(tagsFromTestTitleRegexp));
 const tags = [
-  (config.statuscake.customer),
-  (config.statuscake.service),
-  (config.statuscake.device),
-  (config.statuscake.version)];
+  (config.statuscake.firstTag),
+  (config.statuscake.secondTag),
+  (config.statuscake.thirdTag),
+  (config.statuscake.fourthTag)];
 
 const loadtimeGauge = new client.Gauge({
-  name: (config.statuscake.nameofloadtimegauge),
+  name: (config.statuscake.nameOfLoadTimeGauge),
   help: 'Loadtime of your page',
-  labelNames: (tags),
+  labelNames: tags,
 });
 const filesizeGauge = new client.Gauge({
-  name: (config.statuscake.nameoffilesizegauge),
+  name: (config.statuscake.nameOfFileSizeGauge),
   help: 'Filesize of your page',
-  labelNames: (tags),
+  labelNames: tags,
 });
 const requestGauge = new client.Gauge({
-  name: (config.statuscake.nameofrequestgauge),
+  name: (config.statuscake.nameOfRequestGauge),
   help: 'Number of request',
-  labelNames: (tags),
+  labelNames: tags,
 });
 
 setInterval(() => {
@@ -34,7 +34,7 @@ setInterval(() => {
   const data = storage.getData();
   if (data.length > 0) {
     data.forEach((myItem) => {
-      const parsedTitle = getTagsFromTitle(myItem.Title);
+      const parsedTitle = matchTagsFromTitle(myItem.Title);
       const setter = (gauge, value) => gauge.set(parsedTitle.groups, value, date);
       setter(loadtimeGauge, myItem.LatestStats.loadTimeMS);
       setter(filesizeGauge, myItem.LatestStats.fileSizeKB);

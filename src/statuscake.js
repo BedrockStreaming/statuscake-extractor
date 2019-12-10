@@ -8,7 +8,7 @@ const STATUS_CAKE_BASE_URL = `${baseUrl}?API=${apikey}&Username=${username}`;
 
 const fetchStatuCakeData = storage => axios.get(STATUS_CAKE_BASE_URL)
   .then(({ data: { data: urls } }) => {
-    const urlsFormated = urls.filter(item => String(item.Title).startsWith(config.statuscake.filterby)).map((item) => {
+    const urlsFormated = urls.filter(item => String(item.Title).startsWith(config.statuscake.testTitleFilter)).map((item) => {
       const {
         URL,
         Title,
