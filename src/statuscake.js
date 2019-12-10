@@ -8,29 +8,30 @@ const STATUS_CAKE_BASE_URL = `${baseUrl}?API=${apikey}&Username=${username}`;
 
 const fetchStatuCakeData = storage => axios.get(STATUS_CAKE_BASE_URL)
   .then(({ data: { data: urls } }) => {
-    const urlsFormated = urls.filter(item => String(item.Title).startsWith(config.statuscake.testTitleFilter)).map((item) => {
-      const {
-        URL,
-        Title,
-        LatestStats: {
-          Loadtime_ms: loadTimeMS,
-          Filesize_kb: fileSizeKB,
-          Requests,
-        },
-      } = item;
-      debug(URL, Title, loadTimeMS, fileSizeKB, Requests);
-      const myNewItem = {
-        URL,
-        Title,
-        LatestStats: {
-          loadTimeMS,
-          fileSizeKB,
-          Requests,
-        },
-      };
+    const urlsFormated = urls.filter(item => String(item.Title).startsWith(config.statuscake.testTitleFilter))
+      .map((item) => {
+        const {
+          URL,
+          Title,
+          LatestStats: {
+            Loadtime_ms: loadTimeMS,
+            Filesize_kb: fileSizeKB,
+            Requests,
+          },
+        } = item;
+        debug(URL, Title, loadTimeMS, fileSizeKB, Requests);
+        const myNewItem = {
+          URL,
+          Title,
+          LatestStats: {
+            loadTimeMS,
+            fileSizeKB,
+            Requests,
+          },
+        };
 
-      return myNewItem;
-    });
+        return myNewItem;
+      });
 
     storage.setData(urlsFormated);
   }).catch((error) => {
