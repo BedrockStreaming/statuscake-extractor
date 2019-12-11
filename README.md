@@ -22,6 +22,13 @@ To configure the project, we use npm [`config`](https://www.npmjs.com/package/co
 - baseUrl (Imperative to get access to statuscake)
 - route (Name your route)
 - listener (3000 by default)
+- testTitleFilter (Name of your filter)
+- firstTag (Name of your tag)
+- nameOflLoadTimeGauge (Name of your loadtime gauge)
+- nameOfFileSizeGauge (Name of your filesize gauge)
+- nameOfRequestGauge (Name of your request gauge)
+- tagsFromTestTitleRegexp (Your regex)
+
 
 ## Debug
 
