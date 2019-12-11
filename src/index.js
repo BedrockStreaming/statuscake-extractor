@@ -8,23 +8,23 @@ const { tagsFromTestTitleRegexp } = config.statuscake;
 
 const matchTagsFromTitle = title => title.match(new RegExp(tagsFromTestTitleRegexp));
 const tags = [
-  (config.statuscake.firstTag),
-  (config.statuscake.secondTag),
-  (config.statuscake.thirdTag),
-  (config.statuscake.fourthTag)];
+  config.statuscake.firstTag,
+  config.statuscake.secondTag,
+  config.statuscake.thirdTag,
+  config.statuscake.fourthTag];
 
 const loadtimeGauge = new client.Gauge({
-  name: (config.statuscake.nameOfLoadTimeGauge),
+  name: config.statuscake.nameOfLoadTimeGauge,
   help: 'Loadtime of your page',
   labelNames: tags,
 });
 const filesizeGauge = new client.Gauge({
-  name: (config.statuscake.nameOfFileSizeGauge),
+  name: config.statuscake.nameOfFileSizeGauge,
   help: 'Filesize of your page',
   labelNames: tags,
 });
 const requestGauge = new client.Gauge({
-  name: (config.statuscake.nameOfRequestGauge),
+  name: config.statuscake.nameOfRequestGauge,
   help: 'Number of request',
   labelNames: tags,
 });
