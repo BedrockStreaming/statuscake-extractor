@@ -7,26 +7,21 @@ const storage = require('./statuscakedata');
 const { tagsFromTestTitleRegexp } = config.statuscake;
 
 const matchTagsFromTitle = title => title.match(new RegExp(tagsFromTestTitleRegexp));
-const tags = [
-  config.statuscake.firstTag,
-  config.statuscake.secondTag,
-  config.statuscake.thirdTag,
-  config.statuscake.fourthTag];
 
 const loadtimeGauge = new client.Gauge({
   name: config.statuscake.nameOfLoadTimeGauge,
   help: 'Loadtime of your page',
-  labelNames: tags,
+  labelNames: config.statuscake.tags,
 });
 const filesizeGauge = new client.Gauge({
   name: config.statuscake.nameOfFileSizeGauge,
   help: 'Filesize of your page',
-  labelNames: tags,
+  labelNames: config.statuscake.tags,
 });
 const requestGauge = new client.Gauge({
   name: config.statuscake.nameOfRequestGauge,
   help: 'Number of request',
-  labelNames: tags,
+  labelNames: config.statuscake.tags,
 });
 
 setInterval(() => {
