@@ -4,24 +4,26 @@ const fetchStatuCakeData = require('./statuscake');
 const server = require('./server');
 const storage = require('./statuscakedata');
 
-const { tagsFromTestTitleRegexp } = config.statuscake;
+const {
+  tagsFromTestTitleRegexp, nameOfLoadTimeGauge, tags, nameOfFileSizeGauge, nameOfRequestGauge,
+} = config.statuscake;
 
 const matchTagsFromTitle = title => title.match(new RegExp(tagsFromTestTitleRegexp));
 
 const loadtimeGauge = new client.Gauge({
-  name: config.statuscake.nameOfLoadTimeGauge,
+  name: nameOfLoadTimeGauge,
   help: 'Loadtime of your page',
-  labelNames: config.statuscake.tags,
+  labelNames: tags,
 });
 const filesizeGauge = new client.Gauge({
-  name: config.statuscake.nameOfFileSizeGauge,
+  name: nameOfFileSizeGauge,
   help: 'Filesize of your page',
-  labelNames: config.statuscake.tags,
+  labelNames: tags,
 });
 const requestGauge = new client.Gauge({
-  name: config.statuscake.nameOfRequestGauge,
+  name: nameOfRequestGauge,
   help: 'Number of request',
-  labelNames: config.statuscake.tags,
+  labelNames: tags,
 });
 
 setInterval(() => {
