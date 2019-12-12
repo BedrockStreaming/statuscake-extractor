@@ -6,5 +6,11 @@
       "baseUrl": "your URL",
       "route": "'your route'",
       "listener": "your listener"
+      "testTitleFilter": "your filter",
+      "nameOfLoadTimeGauge": "name of your loadtime gauge",
+      "nameOfFileSizeGauge": "name of your filesize gauge",
+      "nameOfRequestGauge": "name of your request gauge",
+      "tagsFromTestTitleRegexp": "Your regex"
+      "tags": ["Your first tag", "Your second tag"]
     }
 }
