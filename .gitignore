@@ -2,3 +2,4 @@
 node_modules/
 production.json
 default.json
+.cloud
