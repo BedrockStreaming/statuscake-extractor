@@ -1,0 +1,10 @@
+---
+
+package:
+
+file:
+  /srv/builder/design/public/index.html:
+    exists: true
+    owner: root
+    group: root
+    filetype: file

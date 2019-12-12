@@ -1,0 +1,84 @@
+hostname: 6play
+team: cytron
+namespace: default
+imageRegistry: 908538848727.dkr.ecr.eu-west-3.amazonaws.com
+baseImageName: bedrock-web
+app_env:
+  dev: dev
+  staging: staging
+  prod: production
+api:
+  replicaCount: 2
+  autoscale:
+    dev:
+      min: 2
+      max: 4
+    staging:
+      min: 2
+      max: 4
+    prod:
+      min: 2
+      max: 6
+node:
+  limits:
+    dev:
+      cpu: 1000m
+      memory: 500Mi
+    staging:
+      cpu: 1000m
+      memory: 500Mi
+    prod:
+      cpu: 1000m
+      memory: 200Mi
+  requests:
+    staging:
+      cpu: 500m
+      memory: 250Mi
+    prod:
+      cpu: 500m
+      memory: 100Mi
+nginx:
+  limits:
+    dev:
+      cpu: 250m
+      memory: 64Mi
+    staging:
+      cpu: 250m
+      memory: 64Mi
+    prod:
+      cpu: 500m
+      memory: 128Mi
+  requests:
+    staging:
+      cpu: 5m
+      memory: 5Mi
+    prod:
+      cpu: 50m
+      memory: 32Mi
+customers:
+  m6web:
+    staging:
+      dns_zone: "staging.6cloud.fr"
+    prod:
+      dns_zone: "6cloud.fr"
+  rtlbe:
+    staging:
+      dns_zone: "staging.6cloud.fr"
+    prod:
+      dns_zone: "6cloud.fr"
+  rtlhr:
+    staging:
+      dns_zone: "staging.6cloud.fr"
+    prod:
+      dns_zone: "6cloud.fr"
+  rtlhu:
+    staging:
+      dns_zone: "staging.6cloud.fr"
+    prod:
+      dns_zone: "6cloud.fr"
+  salto:
+    staging:
+      dns_zone: "staging.salto.fr"
+    prod:
+      dns_zone: "salto.fr"
+

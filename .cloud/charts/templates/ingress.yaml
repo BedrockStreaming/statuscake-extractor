@@ -1,0 +1,48 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "{{ .Chart.Name }}-{{ .Values.customer }}-ingress"
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    project: {{ .Chart.Name }}
+    team: {{ .Values.team }}
+    customer: {{ .Values.customer }}
+    tenant: {{ .Values.tenant }}
+  annotations:
+    kubernetes.io/ingress.class: "haproxy-v1"
+    ingress.kubernetes.io/health-check-uri: "/nginx-status"
+    ingress.kubernetes.io/health-check-interval: "5s"
+    ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+    - host: '{{ .Values.customer }}-front.{{ index .Values.customers .Values.customer .Values.env "dns_zone" }}'
+      http:
+        paths:
+        - backend:
+            serviceName: "{{ .Chart.Name }}-{{ .Values.customer }}-haproxy"
+            servicePort: nginx
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Chart.Name }}-{{ .Values.customer }}-haproxy"
+  labels:
+    app: "{{ .Chart.Name }}"
+    type: scaling
+    project: {{ .Chart.Name }}
+    team: {{ .Values.team }}
+    customer: {{ .Values.customer }}
+    tenant: {{ .Values.tenant }}
+
+spec:
+  clusterIP: None
+  ports:
+    - name: nginx
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  selector:
+    app: "{{ .Chart.Name }}-{{ .Values.customer }}"
+    type: api

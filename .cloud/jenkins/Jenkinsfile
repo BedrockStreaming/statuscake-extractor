@@ -1,0 +1,108 @@
+#!groovy
+pipeline {
+    agent {
+        label "cloud-builder"
+    }
+    environment {
+        PROJECT_NAME = 'statuscake-extractor'
+        TARGET = 'services'
+        BUILD_DATE = new Date(currentBuild.startTimeInMillis).format("yyyy-MM-dd'T'HH:mm:ssZ")
+        TIMESTAMP = new Date(currentBuild.startTimeInMillis).format("yyyyMMddHHmmss")
+        IMAGE_TAG = String.format("%s-%s", new Date(currentBuild.startTimeInMillis).format("yyyyMMddHHmmss"), GIT_BRANCH.replaceAll("/", "-"))
+    }
+    parameters {
+        string(name: 'IS_CRON_TRIGGERED', defaultValue: 'false', description: "Boolean to identify, whether or not, pipeline has been triggered by cronjob; let default value to false")
+        choice(choices: ['staging5.k8s.staging.6cloud.fr', "${env.HELM_KUBE_CONTEXT_STAGING}"], description: 'Set staging cluster', name: 'OVER_HELM_KUBE_CONTEXT_STAGING')
+        choice(choices: ['prod5.k8s.6cloud.fr', "${env.HELM_KUBE_CONTEXT_PROD}"], description: 'Set prod cluster', name: 'OVER_HELM_KUBE_CONTEXT_PROD')
+    }
+    stages {
+        stage('Docker build') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'jenkins-cicd@6cloud-services']]) {
+                    withEnv(["RUNTIME=${env.CHANGE_ID ? 'dev': 'prod'}"]) {
+                        echo "Building the project '${PROJECT_NAME}' for branch '${GIT_BRANCH}' -> image tag '${IMAGE_TAG}'"
+                        sh "./.cloud/jenkins/builder.sh"
+                    }
+                }
+            }
+        }
+
+        // stage('Test') {
+        //     // Remove this condition if you want to run tests even before a deploy
+        //     when {
+        //         changeRequest()
+        //     }
+        //     steps {
+        //         sh "./.cloud/jenkins/tester.sh"
+        //     }
+        // }
+
+        // stage('Deploy') {
+        //     when {
+        //         not {
+        //             changeRequest()
+        //         }
+        //     }
+        //     stages {
+        //         stage('Deploy to staging') {
+        //             steps {
+        //                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'jenkins-cicd@6cloud-services']]) {
+        //                     withEnv(["ENV=staging", "HELM_KUBE_CONTEXT_STAGING=${params.OVER_HELM_KUBE_CONTEXT_STAGING}"]) {
+        //                         echo "Deploying branch '${GIT_BRANCH}' with tag '${IMAGE_TAG}' to '${ENV}'"
+        //                         sh "./.cloud/jenkins/deployer.sh"
+        //                     }
+        //                 }
+        //                 script {
+        //                     // When Y deployment is needed
+        //                     if (env.Y_DEPLOY == 'enabled') {
+        //                         stage('Deploy to staging - Y') {
+        //                             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "jenkins-cicd@6cloud-${TARGET}"]]) {
+        //                                 withEnv(["ENV=staging", "DOCKER_IMAGE_HELM_STAGING=$Y_DOCKER_IMAGE_HELM_STAGING", "DOCKER_IMAGE_KUBECTL_STAGING=$Y_DOCKER_IMAGE_KUBECTL_STAGING", "HELM_KUBE_CONTEXT_STAGING=$Y_HELM_KUBE_CONTEXT_STAGING"]) {
+        //                                     echo "Deploying branch '${GIT_BRANCH}' with tag '${IMAGE_TAG}' to '${ENV}'"
+        //                                     sh "./.cloud/jenkins/deployer.sh"
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+
+        //         stage('Manual approval') {
+        //             when {
+        //                environment name: 'IS_CRON_TRIGGERED', value: 'false'
+        //             }
+        //             steps {
+        //                 timeout(time:30, unit:'MINUTES') {
+        //                     input "Deploy '${GIT_BRANCH}' with tag '${IMAGE_TAG}' to prod?"
+        //                 }
+        //             }
+        //         }
+
+        //         stage('Deploy to prod') {
+        //             steps {
+        //                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'jenkins-cicd@6cloud-services']]) {
+        //                     withEnv(["ENV=prod", "HELM_KUBE_CONTEXT_PROD=${params.OVER_HELM_KUBE_CONTEXT_PROD}"]) {
+        //                         echo "Deploying branch '${GIT_BRANCH}' with tag '${IMAGE_TAG}' to '${ENV}'"
+        //                         sh "./.cloud/jenkins/deployer.sh"
+        //                     }
+        //                 }
+        //                 script {
+        //                     // When Y deployment is needed
+        //                     if (env.Y_DEPLOY == 'enabled') {
+        //                         stage('Deploy to prod - Y') {
+        //                             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "jenkins-cicd@6cloud-${TARGET}"]]) {
+        //                                 withEnv(["ENV=prod", "DOCKER_IMAGE_HELM_PROD=$Y_DOCKER_IMAGE_HELM_PROD", "DOCKER_IMAGE_KUBECTL_PROD=$Y_DOCKER_IMAGE_KUBECTL_PROD", "HELM_KUBE_CONTEXT_PROD=$Y_HELM_KUBE_CONTEXT_PROD"]) {
+        //                                     echo "Deploying branch '${GIT_BRANCH}' with tag '${IMAGE_TAG}' to '${ENV}'"
+        //                                     sh "./.cloud/jenkins/deployer.sh"
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+---
+
+name: site-6play-v4
+version: 0.0.1
+description: BedRock web application.
+keywords:
+  - bedrock
+  - site
+  - web
+sources:
+  - https://github.m6web.fr/m6web/site-6play-v4

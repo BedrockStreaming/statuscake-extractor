@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}-{{ .Values.customer }}"
+  namespace: {{ .Values.namespace }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    type: api
+    project: {{ .Chart.Name }}
+    team: {{ .Values.team }}
+    customer: {{ .Values.customer }}
+    tenant: {{ .Values.tenant }}
+spec:
+#  securityContext:
+#    runAsUser: 1001
+#    fsGroup: 2001
+  replicas: {{ .Values.api.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}-{{ .Values.customer }}"
+      type: api
+  minReadySeconds: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 50%
+  template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}-{{ .Values.customer }}"
+        type: api
+        project: {{ .Chart.Name }}
+        team: {{ .Values.team }}
+        tenant: {{ .Values.tenant }}
+    spec:
+      containers:
+      - name: "node"
+        image: "{{ .Values.imageRegistry }}/{{ .Values.baseImageName }}-node-{{ .Values.customer }}:{{required "An image tag is required at .Values.dockerTag" .Values.dockerTag }}"
+        imagePullPolicy: "Always"
+        command: ["yarn", "start"]
+        env:
+        - name: NODE_ENV
+          value: "{{ index .Values.app_env .Values.env  }}"
+        - name: PORT
+          value: "5000"
+        ports:
+        - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: 5000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          timeoutSeconds: 2
+        resources:
+          limits:
+            cpu: {{ index .Values.node.limits .Values.env "cpu" }}
+            memory: {{ index .Values.node.limits .Values.env "memory" }}
+          requests:
+            cpu: {{ index .Values.node.requests .Values.env "cpu" }}
+            memory: {{ index .Values.node.requests .Values.env "memory" }}
+      - name: "nginx"
+        image: "{{ .Values.imageRegistry }}/{{ .Values.baseImageName }}-nginx-{{ .Values.customer }}:{{required "An image tag is required at .Values.dockerTag" .Values.dockerTag }}"
+        imagePullPolicy: "IfNotPresent"
+        command: ["/usr/sbin/nginx"]
+        livenessProbe:
+          httpGet:
+            path: /nginx-status
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          timeoutSeconds: 1
+#          readinessProbe:
+#            httpGet:
+#              path: /robots.txt
+#              port: 8080
+#            initialDelaySeconds: 3
+#            periodSeconds: 10
+#            timeoutSeconds: 1
+        securityContext:
+          allowPrivilegeEscalation: false
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            cpu: {{ index .Values.nginx.limits .Values.env "cpu" }}
+            memory: {{ index .Values.nginx.limits .Values.env "memory" }}
+        requests:
+          cpu: {{ index .Values.nginx.requests .Values.env "cpu" }}
+          memory: {{ index .Values.nginx.requests .Values.env "memory" }}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - >
+                  sleep 3;
+                  PID=$(cat /run/nginx.pid);
+                  kill -SIGQUIT $PID;
+                  sleep 15;
