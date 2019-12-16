@@ -11,6 +11,6 @@
       "nameOfFileSizeGauge": "name of your filesize gauge",
       "nameOfRequestGauge": "name of your request gauge",
       "tagsFromTestTitleRegexp": "Your regex"
-      "tags": ["Your first tag", "Your second tag"]
+      "tags": ["Your tags"]
     }
 }
