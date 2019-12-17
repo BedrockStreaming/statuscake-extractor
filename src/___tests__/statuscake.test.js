@@ -17,32 +17,36 @@ jest.mock('../statuscakedata', () => ({
 }));
 
 beforeEach(() => {
-  storage.setData = jest.fn();
+  jest.clearAllMocks();
 });
 
-test('fetchStatuCakeData call axios', async () => {
-  axios.get.mockResolvedValue({
-    data: {
-      data: [{
-        ID: 49216,
-        Title: '6play.fr - Programme NCIS - Mobile',
-        URL: 'http://www.6play.fr/n-c-i-s-p_843',
-        Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
-        Location_ISO: 'FR',
-        ContactGroups: [],
-        LatestStats: { Loadtime_ms: 5374, Filesize_kb: 4080.815, Requests: 47 },
-      },
-      {
-        ID: 49217,
-        Title: '6play.fr - Programme Z NCIS - Mobile',
-        URL: 'http://www.6play.fr/n-c-i-s-p_843',
-        Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
-        Location_ISO: 'FR',
-        ContactGroups: [],
-        LatestStats: { Loadtime_ms: 4394, Filesize_kb: 3514.8, Requests: 26 },
-      }],
+const block = {
+  data: {
+    data: [{
+      ID: 49216,
+      Title: 'NCIS',
+      URL: 'http://www.6play.fr/n-c-i-s-p_843',
+      Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
+      Location_ISO: 'FR',
+      ContactGroups: [],
+      LatestStats: { Loadtime_ms: 5374, Filesize_kb: 4080.815, Requests: 47 },
     },
-  });
+    {
+      ID: 49217,
+      Title: 'Marseillais',
+      URL: 'http://www.6play.fr/n-c-i-s-p_843',
+      Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
+      Location_ISO: 'FR',
+      ContactGroups: [],
+      LatestStats: { Loadtime_ms: 4394, Filesize_kb: 3514.8, Requests: 26 },
+    }],
+  },
+};
+
+test('fetchStatuCakeData call axios', async () => {
+  axios.get.mockResolvedValue(
+    block,
+  );
 
   await fetchStatuCakeData(storage);
   expect(axios.get).toBeCalledWith('https://example.com/API/Pagespeed/?API=api-key&Username=user');
@@ -50,28 +54,9 @@ test('fetchStatuCakeData call axios', async () => {
 });
 
 test('it should filter metrics base on config', async () => {
-  axios.get.mockResolvedValue({
-    data: {
-      data: [{
-        ID: 49216,
-        Title: 'NCIS',
-        URL: 'http://www.6play.fr/n-c-i-s-p_843',
-        Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
-        Location_ISO: 'FR',
-        ContactGroups: [],
-        LatestStats: { Loadtime_ms: 5374, Filesize_kb: 4080.815, Requests: 47 },
-      },
-      {
-        ID: 49217,
-        Title: 'Marseillais',
-        URL: 'http://www.6play.fr/n-c-i-s-p_843',
-        Location: 'FR1.PAGESPEED.STATUSCAKE.NET',
-        Location_ISO: 'FR',
-        ContactGroups: [],
-        LatestStats: { Loadtime_ms: 4394, Filesize_kb: 3514.8, Requests: 26 },
-      }],
-    },
-  });
+  axios.get.mockResolvedValue(
+    block,
+  );
   config.statuscake.testTitleFilter = 'NCIS';
 
   await fetchStatuCakeData(storage);
