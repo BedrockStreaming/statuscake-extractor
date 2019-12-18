@@ -28,7 +28,7 @@ To configure the project, we use npm [`config`](https://www.npmjs.com/package/co
 - nameOfFileSizeGauge (Name of your filesize gauge)
 - nameOfRequestGauge (Name of your request gauge)
 - tagsFromTestTitleRegexp (Your regex)
-- tags: (Your tags)
+- tags (Your tags)
 
 
 ## Debug
