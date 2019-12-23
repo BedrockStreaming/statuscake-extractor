@@ -38,7 +38,7 @@ setInterval(() => {
       setter(requestGauge, myItem.LatestStats.Requests);
     });
   }
-});
+}, 30000);
 
 this.interval = setInterval(() => fetchStatuCakeData(storage), config.statuscake.interval);
 
